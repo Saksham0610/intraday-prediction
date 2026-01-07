@@ -1,0 +1,1 @@
+web: gunicorn intraday_prediction.wsgi

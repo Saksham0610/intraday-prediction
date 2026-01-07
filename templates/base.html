@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Intraday Prediction{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <h1 class="logo">📈 Intraday Prediction</h1>
+
+    {% if user.is_authenticated %}
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="logout-btn">Logout</button>
+      </form>
+    {% endif %}
+  </div>
+</header>
+
+<main class="container">
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>
