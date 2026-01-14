@@ -1,24 +1,114 @@
-{% extends 'base.html' %}
-
-{% block title %}Dashboard{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
-<h2>Welcome, {{ user.username }} 👋</h2>
 
-<div class="card-grid">
-  <div class="card">
-    <h3>Today’s Market</h3>
-    <p>Intraday buy signals will appear here.</p>
-  </div>
+<div class="container-fluid mt-4">
+    <h3 class="mb-3">📊 Intraday AI Dashboard</h3>
 
-  <div class="card">
-    <h3>My Watchlist</h3>
-    <p>Stocks you are tracking.</p>
-  </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Company</th>
+                    <th>Graph</th>
+                    <th>Market Price</th>
+                    <th>Change %</th>
+                    <th>Trend</th>
+                    <th>Signal</th>
+                    <th>Confidence</th>
+                    <th>Risk</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in stocks %}
+                <tr>
+                    <td>
+                        <strong>{{ stock.company }}</strong><br>
+                        <small class="text-muted">{{ stock.symbol }}</small>
+                    </td>
 
-  <div class="card">
-    <h3>AI Prediction</h3>
-    <p>Status: <strong>Coming Soon</strong></p>
-  </div>
+                    <td width="150">
+                        <canvas id="chart{{ forloop.counter }}" height="50"></canvas>
+                    </td>
+
+                    <td>₹{{ stock.price }}</td>
+
+                    <td class="{% if stock.change >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        {{ stock.change }}%
+                    </td>
+
+                    <td>
+                        {% if stock.trend == "Bullish" %}
+                            <span class="badge bg-success">Bullish</span>
+                        {% elif stock.trend == "Bearish" %}
+                            <span class="badge bg-danger">Bearish</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Sideways</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if stock.signal == "BUY" %}
+                            <span class="badge bg-success">BUY</span>
+                        {% elif stock.signal == "SELL" %}
+                            <span class="badge bg-danger">SELL</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">HOLD</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ stock.confidence }}%</td>
+                    <td>{{ stock.risk }}</td>
+                    <td>{{ stock.updated }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+{% for stock in stocks %}
+{% if stock.change >= 0 %}
+    var lineColor{{ forloop.counter }} = "#28a745";
+{% else %}
+    var lineColor{{ forloop.counter }} = "#dc3545";
+{% endif %}
+
+var ctx{{ forloop.counter }} = document.getElementById("chart{{ forloop.counter }}");
+if (ctx{{ forloop.counter }}) {
+    new Chart(ctx{{ forloop.counter }}, {
+        type: 'line',
+        data: {
+            labels: {{ stock.chart }},
+            datasets: [{
+                data: {{ stock.chart }},
+                borderColor: lineColor{{ forloop.counter }},
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false }
+            }
+        }
+    });
+}
+{% endfor %}
+
+});
+</script>
+
 {% endblock %}
