@@ -1,6 +1,39 @@
-<form method="post">
-  {% csrf_token %}
-  <input name="username" placeholder="Username">
-  <input name="password" type="password" placeholder="Password">
-  <button type="submit">Login</button>
-</form>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Login</h2>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                Invalid username or password
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Login
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don’t have an account?
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

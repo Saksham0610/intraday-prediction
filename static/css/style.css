@@ -70,3 +70,77 @@ body {
   padding: 20px;
   border-radius: 6px;
 }
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Mobile & Tablet: natural flow (no vertical centering) */
+@media (max-width: 991px) {
+    .auth-container {
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+}
+
+/* Desktop: visually balanced, not center-heavy */
+@media (min-width: 992px) {
+    .auth-container {
+        align-items: flex-start;
+        padding-top: 80px;
+    }
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.auth-footer {
+    margin-top: 15px;
+    text-align: center;
+}
