@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 def home(request):
     return redirect('dashboard')
 
-@login_required
+@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'dashboard.html')
 
